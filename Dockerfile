@@ -16,6 +16,9 @@ ENV PATH /opt/redis/bin:$PATH
 
 # Install count-von-count
 ADD ./count-von-count /count-von-count
+RUN mkdir -p /opt/openresty/nginx/conf/include && \
+    ln -sf /count-von-count /opt/openresty/nginx/count-von-count && \
+    ln -sf /count-von-count/config/voncount.nginx.conf /opt/openresty/nginx/conf/include/voncount.conf
 
 EXPOSE 80
 EXPOSE 6379
