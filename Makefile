@@ -4,9 +4,9 @@ ifneq ($(NOCACHE),)
   NOCACHEFLAG=--no-cache
 endif
 
-.PHONY: build push clean test
+.PHONY: build push clean test validate
 
-build: out/openresty out/redis
+build: out/openresty out/redis validate
 	docker build ${NOCACHEFLAG} -t planitar/count-von-count .
 
 push:
@@ -15,6 +15,9 @@ push:
 clean:
 	rm -rf ./out
 	docker rmi -f planitar/count-von-count || true
+
+validate: count-von-count/config/voncount.config
+	./script/json-validate.py $<
 
 test:
 	docker run -d --name test-cvc planitar/count-von-count
