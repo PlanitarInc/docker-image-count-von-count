@@ -1,5 +1,9 @@
 FROM planitar/base
 
+# Install supervisord
+RUN apt-get install -y supervisor
+ADD ./supervisord.conf /opt/supervisor/supervisord.conf
+
 # Install openresty
 ADD ./out/openresty /opt/openresty
 ADD nginx.conf /opt/openresty/nginx/conf/nginx.conf
@@ -12,10 +16,6 @@ ENV PATH /opt/redis/bin:$PATH
 
 # Install count-von-count
 ADD ./count-von-count /count-von-count
-
-# Install supervisord
-RUN apt-get install -y supervisor
-ADD ./supervisord.conf /opt/supervisor/supervisord.conf
 
 EXPOSE 80
 EXPOSE 6379
